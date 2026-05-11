@@ -243,13 +243,47 @@
     }
     .todo-add-row button:hover { background: rgba(196,122,58,.25); }
 
-    /* Note */
+    /* Notes (tabbed) */
     .note-wrap {
       display: flex;
       flex-direction: column;
       flex: 1;
       overflow: hidden;
     }
+    .note-tabs {
+      display: flex;
+      gap: 2px;
+      padding: 8px 12px 0;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .note-tab {
+      background: none;
+      border: 1px solid transparent;
+      border-bottom: none;
+      border-radius: 5px 5px 0 0;
+      color: var(--text-faint);
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      cursor: pointer;
+      transition: var(--t);
+    }
+    .note-tab:hover { color: var(--text-muted); }
+    .note-tab.active {
+      background: var(--surface-2);
+      border-color: var(--border);
+      color: var(--orange-text);
+    }
+    .note-panel {
+      display: none;
+      flex-direction: column;
+      flex: 1;
+      overflow: hidden;
+    }
+    .note-panel.active { display: flex; }
     .note-header {
       display: flex;
       align-items: center;
@@ -355,25 +389,28 @@
     /* grid */
     .links-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(auto-fill, 120px);
       gap: 9px;
+      justify-content: start;
+      align-content: start;
     }
 
     .lcard {
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
-      gap: 6px;
-      padding: 12px;
+      gap: 5px;
+      padding: 11px;
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      text-decoration: none;
       cursor: pointer;
       transition: border-color var(--t), background var(--t);
       position: relative;
-      aspect-ratio: 1.1 / 1;
+      width: 120px;
+      height: 120px;
       user-select: none;
+      flex-shrink: 0;
     }
     .lcard:hover { border-color: var(--orange-dim); background: var(--surface-2); }
     .lcard.drag-over { border-color: var(--orange); border-style: dashed; background: var(--orange-glow); }
@@ -432,7 +469,9 @@
       font-family: 'DM Mono', monospace;
       cursor: pointer;
       transition: var(--t);
-      aspect-ratio: 1.1 / 1;
+      width: 120px;
+      height: 120px;
+      flex-shrink: 0;
     }
     .lcard-add:hover { border-color: var(--orange-dim); color: var(--orange-text); }
     .lcard-add-icon { font-size: 20px; line-height: 1; font-family: 'DM Sans', sans-serif; }
@@ -511,6 +550,29 @@
     }
     .weather-err { color: #a05050; }
 
+    /* Quick links */
+    .quick-links {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .qlink {
+      display: block;
+      padding: 5px 8px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 10px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-family: 'DM Mono', monospace;
+      transition: var(--t);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .qlink:hover { border-color: var(--orange-dim); color: var(--orange-text); }
+
     /* ── Utils ───────────────────────────────────────── */
     ::-webkit-scrollbar { width: 3px; }
     ::-webkit-scrollbar-track { background: transparent; }
@@ -553,14 +615,28 @@
       </div>
 
       <div class="note-wrap">
-        <div class="note-header">
-          <div class="note-pip"></div>
-          <input class="note-title-in" id="nt" type="text" placeholder="Anotações…" spellcheck="false" />
+        <div class="note-tabs">
+          <button class="note-tab active" data-note="1">Nota 1</button>
+          <button class="note-tab"        data-note="2">Nota 2</button>
+          <button class="note-tab"        data-note="3">Nota 3</button>
         </div>
-        <textarea class="note-body-ta" id="nb" placeholder="Escreva aqui…" spellcheck="false"></textarea>
-        <div class="note-footer">
-          <span class="save-s" id="ns">salvo</span>
-          <span id="nc">0 chars</span>
+        <!-- Panel 1 -->
+        <div class="note-panel active" id="np1">
+          <div class="note-header"><div class="note-pip"></div><input class="note-title-in" id="nt1" type="text" placeholder="Título…" spellcheck="false" /></div>
+          <textarea class="note-body-ta" id="nb1" placeholder="Escreva aqui…" spellcheck="false"></textarea>
+          <div class="note-footer"><span class="save-s" id="ns1">salvo</span><span id="nc1">0 chars</span></div>
+        </div>
+        <!-- Panel 2 -->
+        <div class="note-panel" id="np2">
+          <div class="note-header"><div class="note-pip"></div><input class="note-title-in" id="nt2" type="text" placeholder="Título…" spellcheck="false" /></div>
+          <textarea class="note-body-ta" id="nb2" placeholder="Segunda nota…" spellcheck="false"></textarea>
+          <div class="note-footer"><span class="save-s" id="ns2">salvo</span><span id="nc2">0 chars</span></div>
+        </div>
+        <!-- Panel 3 -->
+        <div class="note-panel" id="np3">
+          <div class="note-header"><div class="note-pip"></div><input class="note-title-in" id="nt3" type="text" placeholder="Título…" spellcheck="false" /></div>
+          <textarea class="note-body-ta" id="nb3" placeholder="Terceira nota…" spellcheck="false"></textarea>
+          <div class="note-footer"><span class="save-s" id="ns3">salvo</span><span id="nc3">0 chars</span></div>
         </div>
       </div>
 
@@ -590,10 +666,19 @@
         <div class="wlabel">Clima · Salvador</div>
         <div id="weather"><span class="weather-loading">carregando…</span></div>
       </div>
+      <div class="wcard">
+        <div class="wlabel">Referência rápida</div>
+        <div class="quick-links">
+          <a class="qlink" href="https://reddit.com"                  target="_blank">Reddit</a>
+          <a class="qlink" href="https://news.ycombinator.com"        target="_blank">Hacker News</a>
+          <a class="qlink" href="https://chatgpt.com"                 target="_blank">ChatGPT</a>
+          <a class="qlink" href="https://github.com"                  target="_blank">GitHub</a>
+          <a class="qlink" href="https://wikipedia.org"               target="_blank">Wikipedia</a>
+          <a class="qlink" href="https://developer.mozilla.org"       target="_blank">MDN Docs</a>
+          <a class="qlink" href="https://translate.google.com"        target="_blank">Tradutor</a>
+        </div>
+      </div>
     </div>
-
-  </div>
-</div>
 
 <script>
 /* ════════════════════════════════════════════════
@@ -769,30 +854,41 @@ document.getElementById('todo-add').addEventListener('click', addTodo);
 document.getElementById('todo-in').addEventListener('keydown', e => { if (e.key === 'Enter') addTodo(); });
 
 /* ════════════════════════════════════════════════
-   NOTE
+   NOTES — 3 independent, tabbed
 ════════════════════════════════════════════════ */
-const ntEl = document.getElementById('nt');
-const nbEl = document.getElementById('nb');
-const nsEl = document.getElementById('ns');
-const ncEl = document.getElementById('nc');
+[1,2,3].forEach(n => {
+  const nt = document.getElementById('nt'+n);
+  const nb = document.getElementById('nb'+n);
+  const ns = document.getElementById('ns'+n);
+  const nc = document.getElementById('nc'+n);
+  nt.value = localStorage.getItem('th_nt'+n) || '';
+  nb.value = localStorage.getItem('th_nb'+n) || '';
+  nc.textContent = nb.value.length + ' chars';
+  let timer;
+  function sched() {
+    clearTimeout(timer);
+    ns.textContent = 'digitando…'; ns.classList.remove('flash');
+    timer = setTimeout(() => {
+      localStorage.setItem('th_nt'+n, nt.value);
+      localStorage.setItem('th_nb'+n, nb.value);
+      ns.textContent = 'salvo'; ns.classList.add('flash');
+      setTimeout(() => ns.classList.remove('flash'), 1400);
+    }, 700);
+  }
+  nt.addEventListener('input', sched);
+  nb.addEventListener('input', () => { nc.textContent = nb.value.length + ' chars'; sched(); });
+});
 
-ntEl.value = localStorage.getItem('th_note_t') || '';
-nbEl.value = localStorage.getItem('th_note_b') || '';
-ncEl.textContent = nbEl.value.length + ' chars';
-
-let noteTimer;
-function schedNote() {
-  clearTimeout(noteTimer);
-  nsEl.textContent = 'digitando…'; nsEl.classList.remove('flash');
-  noteTimer = setTimeout(() => {
-    localStorage.setItem('th_note_t', ntEl.value);
-    localStorage.setItem('th_note_b', nbEl.value);
-    nsEl.textContent = 'salvo'; nsEl.classList.add('flash');
-    setTimeout(() => nsEl.classList.remove('flash'), 1400);
-  }, 700);
-}
-ntEl.addEventListener('input', schedNote);
-nbEl.addEventListener('input', () => { ncEl.textContent = nbEl.value.length + ' chars'; schedNote(); });
+/* Tab switching */
+document.querySelectorAll('.note-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    const n = tab.dataset.note;
+    document.querySelectorAll('.note-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.note-panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('np'+n).classList.add('active');
+  });
+});
 
 /* ════════════════════════════════════════════════
    CLOCK
